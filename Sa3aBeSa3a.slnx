@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Sa3aBeSa3a.Application/Sa3aBeSa3a.Application.csproj" />
+  <Project Path="Sa3aBeSa3a.Domain/Sa3aBeSa3a.Domain.csproj" />
+  <Project Path="Sa3aBeSa3a.Infrastructure/Sa3aBeSa3a.Infrastructure.csproj" />
+  <Project Path="Sa3aBeSa3a/Sa3aBeSa3a.csproj" />
+</Solution>
