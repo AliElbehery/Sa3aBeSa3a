@@ -17,7 +17,7 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .IsRequired();
             builder.Property(o => o.OfferedHours)
                 .IsRequired()
-                .HasPrecision(4, 1);
+                .HasPrecision(6, 2);
             builder.ToTable("Offers", table =>
             {
                 table.HasCheckConstraint(

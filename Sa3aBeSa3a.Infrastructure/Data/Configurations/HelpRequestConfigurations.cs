@@ -24,7 +24,7 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .OnDelete(DeleteBehavior.Restrict);
             builder.Property(hr => hr.HoursNeeded)
                 .IsRequired()
-                .HasPrecision(4, 1);
+                .HasPrecision(4, 2);
             builder.Property(hr => hr.RequestDate)
                 .IsRequired();
             builder.Property(hr => hr.NeededBy)
@@ -32,8 +32,10 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
             builder.Property(hr => hr.District)
                 .IsRequired()
                 .HasMaxLength(100);
-            builder.Property(hr => hr.RequestDate)
-                .IsRequired();
+            builder.HasOne(hr => hr.Category)
+                   .WithMany()
+                   .HasForeignKey(hr => hr.CategoryId)
+                   .OnDelete(DeleteBehavior.Restrict);
             builder.Property(o => o.Status)
                 .HasConversion(
                     v => v.ToString(),
