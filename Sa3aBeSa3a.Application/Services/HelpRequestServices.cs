@@ -2,7 +2,7 @@
 using Sa3aBeSa3a.Domain.Interfaces.Repositries;
 using Sa3aBeSa3a.Domain.Interfaces.Services;
 using Sa3aBeSa3a.Domain.Dtos;
-
+using Sa3aBeSa3a.Domain.Enums;
 
 namespace Sa3aBeSa3a.Application.Services
 {
@@ -56,6 +56,29 @@ namespace Sa3aBeSa3a.Application.Services
         public async Task<IReadOnlyList<HelpRequests>> GetAllHelpRequestsAsync()
         {
             return await helpRequestRepository.GetAllAsync();
+        }
+        public async Task<HelpRequests> CompleteHelpRequestAsync(HelpRequests helpRequest, int ownerId, int helperId, decimal hoursWorked)
+        {
+            if (helpRequest == null)
+            {
+                throw new ArgumentNullException(nameof(helpRequest), "Help request cannot be null.");
+            }
+            if (helpRequest.MemberId != ownerId)
+            {
+                throw new UnauthorizedAccessException("You do not have permission to complete this help request.");
+            }
+            if(helpRequest.Status != HelpRequestStatus.InProgress)
+            {
+                throw new InvalidOperationException("Help request must be in progress to be completed.");
+            }
+            if (hoursWorked <= 0 || hoursWorked > helpRequest.HoursNeeded)
+            {
+                throw new ArgumentException("Hours worked must be greater than 0 and less than or equal to the hours needed.");
+            }
+            helpRequestRepository.CompleteHelpRequestAsync(helpRequest, ownerId, helperId, hoursWorked);
+
+            await helpRequestRepository.SaveChangesAsync();
+            return helpRequest;
         }
     }
 }

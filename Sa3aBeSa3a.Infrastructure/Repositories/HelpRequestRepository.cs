@@ -3,6 +3,7 @@ using Sa3aBeSa3a.Domain.Interfaces.Repositries;
 using Sa3aBeSa3a.Infrastructure.Data;
 using Sa3aBeSa3a.Domain.Dtos;
 using Microsoft.EntityFrameworkCore;
+using Sa3aBeSa3a.Domain.Enums;
 namespace Sa3aBeSa3a.Infrastructure.Repositories
 {
     public class HelpRequestRepository : IHelpRequestRepository
@@ -51,6 +52,25 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         public async Task<Members?> GetMemberById(int memberId)
         {
             return await _context.Members.FindAsync(memberId);
+        }
+        public async Task<HelpRequests> CompleteHelpRequestAsync(HelpRequests helpRequest, int ownerId, int helperId, decimal hoursWorked)
+        {
+            var debit = new LedgerEntries
+            {
+                MemberId = ownerId,
+                Amount = -hoursWorked,
+                TransactionType = TransactionTypes.Debit
+            };
+            var credit = new LedgerEntries
+            {
+                MemberId = helperId,
+                Amount = hoursWorked,
+                TransactionType = TransactionTypes.Credit
+            };
+            helpRequest.Status = HelpRequestStatus.Completed;
+            await _context.LedgerEntries.AddAsync(debit);
+            await _context.LedgerEntries.AddAsync(credit);
+            return helpRequest;
         }
     }
 }
