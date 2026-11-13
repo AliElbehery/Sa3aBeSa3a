@@ -11,6 +11,6 @@ namespace Sa3aBeSa3a.Domain.Entities
         public string PhoneNumber { get; set; }
         public DateTime JoinedDate { get; set; }
         public decimal TotalHours { get; set; }
-        public string ReputationScore { get; set; }
+        public int ReputationScore { get; set; }
     }
 }

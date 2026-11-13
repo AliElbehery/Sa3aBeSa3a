@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Sa3aBeSa3a.Domain.Enums;
 
 namespace Sa3aBeSa3a.Domain.Entities
 {
@@ -16,7 +14,7 @@ namespace Sa3aBeSa3a.Domain.Entities
         public decimal HoursNeeded { get; set; }
         public DateTime RequestDate { get; set; }
         public DateTime NeededBy { get; set; }
-        public string Status { get; set; } // e.g., Open, In Progress, Completed
+        public HelpRequestStatus Status { get; set; } // e.g., Open, In Progress, Completed
         public string District { get; set; }
     }
 }

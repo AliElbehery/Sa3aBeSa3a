@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Sa3aBeSa3a.Domain.Enums;
 
 namespace Sa3aBeSa3a.Domain.Entities
 {
@@ -12,6 +10,8 @@ namespace Sa3aBeSa3a.Domain.Entities
         public int MemberId { get; set; }
         public Members Member { get; set; }
         public decimal OfferedHours { get; set; }
-
+        public DateTime OfferDate { get; set; }
+        public OfferStatus Status { get; set; } // e.g., Pending, Accepted, Rejected
+        public string Message { get; set; } // Optional message from the member making the offer
     }
 }
