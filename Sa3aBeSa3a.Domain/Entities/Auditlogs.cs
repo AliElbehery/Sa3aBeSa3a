@@ -9,7 +9,7 @@ namespace Sa3aBeSa3a.Domain.Entities
         public int Id { get; set; }
         public string actor { get; set; }
         public string Action { get; set; }
-        public DateTime CreateAt { get; set; }
+        public DateTime CreatedAt { get; set; }
         public string Source { get; set; }
         public string Target { get; set; }
 

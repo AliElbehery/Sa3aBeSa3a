@@ -16,5 +16,6 @@ namespace Sa3aBeSa3a.Domain.Entities
         public DateTime NeededBy { get; set; }
         public HelpRequestStatus Status { get; set; } // e.g., Open, In Progress, Completed
         public string District { get; set; }
+        public ICollection<Offers> Offers { get; set; }
     }
 }
