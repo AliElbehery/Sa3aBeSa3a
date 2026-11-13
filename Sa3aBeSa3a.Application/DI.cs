@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Sa3aBeSa3a.Domain.Interfaces.Services;
+using Sa3aBeSa3a.Application.Services;
 
 namespace Sa3aBeSa3a.Application
 {
@@ -7,7 +9,7 @@ namespace Sa3aBeSa3a.Application
         public static IServiceCollection AddApplication(
         this IServiceCollection services)
         {
-            // Register Application services here
+            services.AddScoped<IHelpRequestServices, HelpRequestServices>();
 
             return services;
         }

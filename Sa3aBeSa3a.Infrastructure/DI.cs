@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Sa3aBeSa3a.Infrastructure.Data;
+using Sa3aBeSa3a.Infrastructure.Repositories;
+using Sa3aBeSa3a.Domain.Interfaces.Repositries;
 
 namespace Sa3aBeSa3a.Infrastructure
 {
@@ -12,6 +14,7 @@ namespace Sa3aBeSa3a.Infrastructure
         {
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(connectionString));
+            services.AddScoped<IHelpRequestRepository, HelpRequestRepository>();
 
             return services;
         }
