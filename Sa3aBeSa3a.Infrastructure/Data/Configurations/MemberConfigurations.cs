@@ -1,6 +1,7 @@
 ﻿using Sa3aBeSa3a.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Sa3aBeSa3a.Domain.Enums;
 
 namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
 {
@@ -38,6 +39,15 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
             builder.Property(m => m.JoinedDate)
                 .IsRequired()
                 .HasDefaultValueSql("SYSUTCDATETIME()");
+            builder.Property(m => m.Role)
+                .IsRequired()
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (MemberRole)Enum.Parse(typeof(MemberRole), v));
+            builder.Property(m => m.IsActive)
+                .IsRequired()
+                .HasDefaultValue(true);
         }
+
     }
 }
