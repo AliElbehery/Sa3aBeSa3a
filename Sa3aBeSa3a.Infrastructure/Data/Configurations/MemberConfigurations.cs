@@ -35,14 +35,13 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .HasForeignKey(b => b.MemberId)
                 .OnDelete(DeleteBehavior.Restrict);
             builder.HasIndex(x => x.Email).IsUnique();
-            builder.HasMany(m => m.HelpRequests)
-                .WithOne(hr => hr.Member)
-                .HasForeignKey(hr => hr.MemberId)
-                .OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(m => m.Offers)
                 .WithOne(o => o.Member)
                 .HasForeignKey(o => o.MemberId)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(m => m.JoinedDate)
+                .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()");
         }
     }
 }

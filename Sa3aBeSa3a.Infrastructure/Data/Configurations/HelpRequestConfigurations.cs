@@ -1,6 +1,7 @@
-﻿using Sa3aBeSa3a.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Sa3aBeSa3a.Domain.Entities;
+using Sa3aBeSa3a.Domain.Enums;
 
 namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
 {
@@ -20,10 +21,10 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
             builder.HasOne(hr => hr.Member)
                 .WithMany(m => m.HelpRequests)
                 .HasForeignKey(hr => hr.MemberId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
             builder.Property(hr => hr.HoursNeeded)
                 .IsRequired()
-                .HasColumnType("decimal(18,2)");
+                .HasPrecision(4, 1);
             builder.Property(hr => hr.RequestDate)
                 .IsRequired();
             builder.Property(hr => hr.NeededBy)
@@ -31,6 +32,19 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
             builder.Property(hr => hr.District)
                 .IsRequired()
                 .HasMaxLength(100);
+            builder.Property(hr => hr.RequestDate)
+                .IsRequired();
+            builder.Property(o => o.Status)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (HelpRequestStatus)Enum.Parse(typeof(HelpRequestStatus), v));
+            builder.ToTable("HelpRequests", table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_HelpRequests_HoursNeeded",
+                    "[HoursNeeded] >= 0.5 AND [HoursNeeded] <= 8 AND [HoursNeeded] * 2 = FLOOR([HoursNeeded] * 2)"
+                );
+            });
         }
     }
 }

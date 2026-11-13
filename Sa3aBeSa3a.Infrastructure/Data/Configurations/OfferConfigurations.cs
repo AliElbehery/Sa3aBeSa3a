@@ -17,7 +17,14 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .IsRequired();
             builder.Property(o => o.OfferedHours)
                 .IsRequired()
-                .HasColumnType("decimal(18,2)");
+                .HasPrecision(4, 1);
+            builder.ToTable("Offers", table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_Offers_OfferedHours",
+                    "[OfferedHours] > 0 AND [OfferedHours] * 2 = FLOOR([OfferedHours] * 2)"
+                );
+            });
             builder.Property(o => o.OfferDate)
                 .IsRequired();
             builder.HasOne(o => o.HelpRequest)
@@ -29,10 +36,7 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .WithMany(m => m.Offers)
                 .HasForeignKey(o => o.MemberId)
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.Property(o => o.OfferDate)
-                .IsRequired();
             builder.Property(o => o.Message)
-                .IsRequired()
                 .HasMaxLength(500);
             builder.HasIndex(o => new { o.HelpRequestId, o.MemberId }).IsUnique();
 
