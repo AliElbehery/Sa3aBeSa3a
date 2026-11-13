@@ -32,7 +32,7 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new InvalidOperationException($"Inactive members cannot make offers.");
             }
-            if(userId == (await repository.GetOfferByHelpRequestIdAsync(helpRequestId)).FirstOrDefault(o => o.HelpRequestId == helpRequestId)?.MemberId)
+            if(await repository.HasMemberSubmittedOfferAsync(userId, helpRequestId))
             {
                 throw new InvalidOperationException($"Members cannot make multiple offers on the same help request.");
             }
@@ -44,12 +44,12 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new ArgumentException($"Message cannot exceed 500 characters.");
             }
-            if (!member.MemberSkills.Any(ms => ms.SkillId == helpRequest.Category.Skills.FirstOrDefault()?.Id))
+            if (!helpRequest.Category.Skills.Any(s =>  member.MemberSkills.Any(ms => ms.SkillId == s.Id));
             {
                 throw new InvalidOperationException($"Member does not have the required skill to make an offer on this help request.");
             }
 
-            var offer = await repository.AddAsync(userId, dto);
+            var offer = await repository.AddAsync(userId, helpRequestId, dto);
             return offer;
         }
         public async Task<Offers?> GetOfferByIdAsync(int id)

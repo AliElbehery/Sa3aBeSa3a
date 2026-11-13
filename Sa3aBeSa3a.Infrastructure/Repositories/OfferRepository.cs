@@ -14,18 +14,19 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<Offers> AddAsync(int userId, CreateOfferDto dto)
+        public async Task<Offers> AddAsync(int userId,int helpRequestId, CreateOfferDto dto)
         {
             var offer = new Offers
             {
                 MemberId = userId,
+                HelpRequestId = helpRequestId,
                 OfferedHours = dto.OfferedHours,
                 Message = dto.Message,
                 OfferDate = DateTime.UtcNow,
                 Status = OfferStatus.Pending // Assuming you have an enum for offer status
             };
             _context.Offers.Add(offer);
-            await _context.SaveChangesAsync();
+            await SaveChangesAsync();
             return offer;
         }
         public async Task<Offers?> GetByIdAsync(int id)
@@ -55,6 +56,10 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         public async Task<HelpRequests?> GetHelpRequestByIdAsync(int helpRequestId)
         {
             return await _context.HelpRequests.Include(h => h.Category).ThenInclude(c => c.Skills).FirstOrDefaultAsync(h => h.Id == helpRequestId);
+        }
+        public async Task<bool> HasMemberSubmittedOfferAsync(int memberId, int helpRequestId)
+        {
+            return await _context.Offers.AnyAsync(o => o.MemberId == memberId && o.HelpRequestId == helpRequestId);
         }
 
     }
