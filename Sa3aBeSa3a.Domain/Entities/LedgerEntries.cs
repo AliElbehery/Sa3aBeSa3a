@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Sa3aBeSa3a.Domain.Enums;
 
 namespace Sa3aBeSa3a.Domain.Entities
 {
@@ -11,6 +9,6 @@ namespace Sa3aBeSa3a.Domain.Entities
         public Members Member { get; set; }
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
-        public string TransactionType { get; set; }
+        public TransactionTypes TransactionType { get; set; }
     }
 }

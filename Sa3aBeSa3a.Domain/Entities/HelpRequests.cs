@@ -11,9 +11,12 @@ namespace Sa3aBeSa3a.Domain.Entities
         public string Description { get; set; }
         public int MemberId { get; set; }
         public Members Member { get; set; }
-        public int SkillId { get; set; }
-        public Skills Skill { get; set; }
+        public int CategoryId { get; set; }
+        public Categories Category { get; set; }
         public decimal HoursNeeded { get; set; }
         public DateTime RequestDate { get; set; }
+        public DateTime NeededBy { get; set; }
+        public string Status { get; set; } // e.g., Open, In Progress, Completed
+        public string District { get; set; }
     }
 }
