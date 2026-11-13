@@ -35,6 +35,10 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new ArgumentException("Title, Description, and District cannot be empty.");
             }
+            if (dto.Title.Length > 100 || dto.Description.Length > 200 || dto.District.Length > 100)
+            {
+                throw new ArgumentException("Title cannot exceed 100 characters, Description cannot exceed 200 characters, and District cannot exceed 100 characters.");
+            }
             var helpRequest = await helpRequestRepository.AddAsync(userId, dto);
 
             await helpRequestRepository.SaveChangesAsync();
@@ -49,7 +53,7 @@ namespace Sa3aBeSa3a.Application.Services
             }
             return helpRequest;
         }
-        public async Task<IReadOnlyList<HelpRequests?>> GetAllHelpRequestsAsync()
+        public async Task<IReadOnlyList<HelpRequests>> GetAllHelpRequestsAsync()
         {
             var helpRequests = await helpRequestRepository.GetAllAsync();
             if (helpRequests == null)
