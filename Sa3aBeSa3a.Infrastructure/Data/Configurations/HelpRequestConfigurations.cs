@@ -21,6 +21,16 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .WithMany(m => m.HelpRequests)
                 .HasForeignKey(hr => hr.MemberId)
                 .OnDelete(DeleteBehavior.Cascade);
+            builder.Property(hr => hr.HoursNeeded)
+                .IsRequired()
+                .HasColumnType("decimal(18,2)");
+            builder.Property(hr => hr.RequestDate)
+                .IsRequired();
+            builder.Property(hr => hr.NeededBy)
+                .IsRequired();
+            builder.Property(hr => hr.District)
+                .IsRequired()
+                .HasMaxLength(100);
         }
     }
 }

@@ -13,7 +13,29 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
             builder.Property(o => o.Status)
                 .HasConversion(
                     v => v.ToString(),
-                    v => (OfferStatus)Enum.Parse(typeof(OfferStatus), v));
+                    v => (OfferStatus)Enum.Parse(typeof(OfferStatus), v))
+                .IsRequired();
+            builder.Property(o => o.OfferedHours)
+                .IsRequired()
+                .HasColumnType("decimal(18,2)");
+            builder.Property(o => o.OfferDate)
+                .IsRequired();
+            builder.HasOne(o => o.HelpRequest)
+                .WithMany(hr => hr.Offers)
+                .HasForeignKey(o => o.HelpRequestId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasKey(o => o.Id);
+            builder.HasOne(o => o.Member)
+                .WithMany(m => m.Offers)
+                .HasForeignKey(o => o.MemberId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(o => o.OfferDate)
+                .IsRequired();
+            builder.Property(o => o.Message)
+                .IsRequired()
+                .HasMaxLength(500);
+            builder.HasIndex(o => new { o.HelpRequestId, o.MemberId }).IsUnique();
+
         }
     }
 }
