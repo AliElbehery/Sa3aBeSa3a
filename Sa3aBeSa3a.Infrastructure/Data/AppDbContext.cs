@@ -25,6 +25,58 @@ namespace Sa3aBeSa3a.Infrastructure.Data
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         }
-        
+        private void ValidateLedgerEntries()
+        {
+            ChangeTracker.DetectChanges();
+
+            var hasInvalidChanges = ChangeTracker
+                .Entries<LedgerEntries>()
+                .Any(entry =>
+                    entry.State == EntityState.Modified ||
+                    entry.State == EntityState.Deleted);
+
+            if (hasInvalidChanges)
+            {
+                throw new InvalidOperationException(
+                    "Ledger entries cannot be modified or deleted.");
+            }
+        }
+        private void ValidateAuditLogs()
+        {
+            ChangeTracker.DetectChanges();
+
+            var hasInvalidChanges = ChangeTracker
+                .Entries<AuditLogs>()
+                .Any(entry =>
+                    entry.State == EntityState.Modified ||
+                    entry.State == EntityState.Deleted);
+
+            if (hasInvalidChanges)
+            {
+                throw new InvalidOperationException(
+                    "Audit logs cannot be modified or deleted.");
+            }
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            ValidateLedgerEntries();
+            ValidateAuditLogs();
+
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override Task<int> SaveChangesAsync(
+            bool acceptAllChangesOnSuccess,
+            CancellationToken cancellationToken = default)
+        {
+            ValidateLedgerEntries();
+            ValidateAuditLogs();
+
+            return base.SaveChangesAsync(
+                acceptAllChangesOnSuccess,
+                cancellationToken);
+        }
+
     }
 }

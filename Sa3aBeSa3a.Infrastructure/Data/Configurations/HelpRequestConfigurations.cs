@@ -16,8 +16,6 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
             builder.Property(hr => hr.Description)
                 .IsRequired()
                 .HasMaxLength(500);
-            builder.Property(hr => hr.Status)
-                .IsRequired();
             builder.HasOne(hr => hr.Member)
                 .WithMany(m => m.HelpRequests)
                 .HasForeignKey(hr => hr.MemberId)
