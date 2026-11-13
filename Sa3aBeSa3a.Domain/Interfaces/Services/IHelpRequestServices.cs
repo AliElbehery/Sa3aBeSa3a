@@ -7,7 +7,7 @@ namespace Sa3aBeSa3a.Domain.Interfaces.Services
     {
         Task<HelpRequests> CreateHelpRequestAsync(int userId, CreateHelpRequestDto dto);
         Task<HelpRequests?> GetHelpRequestByIdAsync(int id);
-        Task<IReadOnlyList<HelpRequests?>> GetAllHelpRequestsAsync();
+        Task<IReadOnlyList<HelpRequests>> GetAllHelpRequestsAsync();
 
     }
 }

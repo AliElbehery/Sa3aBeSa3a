@@ -35,9 +35,9 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new ArgumentException("Title, Description, and District cannot be empty.");
             }
-            if (dto.Title.Length > 100 || dto.Description.Length > 200 || dto.District.Length > 100)
+            if (dto.Title.Length > 100 || dto.Description.Length > 500 || dto.District.Length > 100)
             {
-                throw new ArgumentException("Title cannot exceed 100 characters, Description cannot exceed 200 characters, and District cannot exceed 100 characters.");
+                throw new ArgumentException("Title cannot exceed 100 characters, Description cannot exceed 500 characters, and District cannot exceed 100 characters.");
             }
             var helpRequest = await helpRequestRepository.AddAsync(userId, dto);
 
@@ -55,12 +55,7 @@ namespace Sa3aBeSa3a.Application.Services
         }
         public async Task<IReadOnlyList<HelpRequests>> GetAllHelpRequestsAsync()
         {
-            var helpRequests = await helpRequestRepository.GetAllAsync();
-            if (helpRequests == null)
-            {
-                throw new KeyNotFoundException("No help requests found.");
-            }
-            return helpRequests;
+            return await helpRequestRepository.GetAllAsync();
         }
     }
 }
