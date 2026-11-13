@@ -1,3 +1,7 @@
+using Sa3aBeSa3a.Infrastructure;
+using Sa3aBeSa3a.Application;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Sa3aBeSa3a
 {
@@ -8,6 +12,10 @@ namespace Sa3aBeSa3a
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddApplication();
+            builder.Services.AddInfrastructure(
+    builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Missing ConnectionStrings:DefaultConnection"));
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

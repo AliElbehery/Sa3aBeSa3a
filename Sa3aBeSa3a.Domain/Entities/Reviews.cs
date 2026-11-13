@@ -12,7 +12,7 @@ namespace Sa3aBeSa3a.Domain.Entities
         public int RevieweeId { get; set; }
         public Members Reviewee { get; set; }
         public int Rating { get; set; } // 1 to 5
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
         public DateTime ReviewDate { get; set; }
         public int HelpRequestId { get; set; }
         public HelpRequests HelpRequest { get; set; }

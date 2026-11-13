@@ -12,6 +12,6 @@ namespace Sa3aBeSa3a.Domain.Entities
         public decimal OfferedHours { get; set; }
         public DateTime OfferDate { get; set; }
         public OfferStatus Status { get; set; } // e.g., Pending, Accepted, Rejected
-        public string Message { get; set; } // Optional message from the member making the offer
+        public string? Message { get; set; } // Optional message from the member making the offer
     }
 }

@@ -7,7 +7,7 @@ namespace Sa3aBeSa3a.Domain.Entities
     public class Auditlogs
     {
         public int Id { get; set; }
-        public string actor { get; set; }
+        public string Actor { get; set; }
         public string Action { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Source { get; set; }
