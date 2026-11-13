@@ -10,7 +10,7 @@ namespace Sa3aBeSa3a.Domain.Interfaces.Repositries
         Task<IReadOnlyList<Offers>> GetAllAsync();
         Task SaveChangesAsync();
         Task<Members?> GetMemberById(int memberId);
-        Task<IReadOnlyList<Offers>> GetOffersByHelpRequestIdAsync(int helpRequestId);
+        Task<ICollection<Offers>> GetOffersByHelpRequestIdAsync(int helpRequestId);
         Task<HelpRequests?> GetHelpRequestByIdAsync(int helpRequestId);
         Task<bool> HasMemberSubmittedOfferAsync(int memberId, int helpRequestId);
         Task<decimal> GetMemberBalanceAsync(int memberId);

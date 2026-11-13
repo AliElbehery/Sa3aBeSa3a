@@ -61,20 +61,28 @@ namespace Sa3aBeSa3a.Application.Services
         {
             return await repository.GetAllAsync();
         }
-        public async Task<IReadOnlyList<Offers>> GetOffersByHelpRequestIdAsync(int helpRequestId)
+        public async Task<ICollection<Offers>> GetOffersByHelpRequestIdAsync(int helpRequestId)
         {
             return await repository.GetOffersByHelpRequestIdAsync(helpRequestId);
         }
-        public async Task<Offers> AcceptOfferAsync(int offerId)
+        public async Task<Offers> AcceptOfferAsync(int offerId, int userId)
         {
             var offer = await repository.GetByIdAsync(offerId);
-            if(!offer.Member.IsActive)
-            {
-                throw new InvalidOperationException($"Inactive members cannot accept offers.");
-            }
             if (offer == null)
             {
                 throw new ArgumentException($"Offer with ID {offerId} does not exist.");
+            }
+            if(offer.HelpRequest.MemberId != userId)
+            {
+                throw new InvalidOperationException($"Only the owner of the help request can accept an offer.");
+            }
+            if(offer.HelpRequest.Status != HelpRequestStatus.Open)
+            {
+                throw new InvalidOperationException($"Cannot accept an offer for a help request that is not open.");
+            })
+            if (!offer.Member.IsActive)
+            {
+                throw new InvalidOperationException($"Inactive members cannot accept offers.");
             }
             if (offer.Status != OfferStatus.Pending)
             {
@@ -84,13 +92,15 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new InvalidOperationException($"Cannot accept an offer for a help request that is not open.");
             }
-            if(await repository.GetMemberBalanceAsync(offer.MemberId) < offer.OfferedHours || await repository.GetLockedHoursAsync(offer.MemberId) < offer.OfferedHours)
+            var availableBalance = await repository.GetMemberBalanceAsync(offer.MemberId) - await repository.GetLockedHoursAsync(offer.MemberId);
+            if (availableBalance < offer.OfferedHours)
             {
                 throw new InvalidOperationException($"Member does not have enough balance to accept this offer.");
             }
 
             offer.Status = OfferStatus.Accepted;
-            foreach(var o in await repository.GetOffersByHelpRequestIdAsync(offer.HelpRequestId))
+            offer.HelpRequest.Status = HelpRequestStatus.InProgress;
+            foreach (var o in await repository.GetOffersByHelpRequestIdAsync(offer.HelpRequestId))
             {
                 if(o.Id != offerId)
                 {

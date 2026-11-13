@@ -30,7 +30,7 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         }
         public async Task<Offers?> GetByIdAsync(int id)
         {
-            return await _context.Offers.Include(o => o.Member).Include(o => o.HelpRequest).ThenInclude(h => h.MemberId).FirstOrDefaultAsync(o => o.Id == id);
+            return await _context.Offers.Include(o => o.Member).Include(o => o.HelpRequest).ThenInclude(h => h.Member).FirstOrDefaultAsync(o => o.Id == id);
         }
         public async Task<IReadOnlyList<Offers>> GetAllAsync()
         {
@@ -44,9 +44,9 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         {
             return await _context.Members.Include(m => m.MemberSkills).FirstOrDefaultAsync(m => m.Id == memberId);
         }
-        public async Task<IReadOnlyList<Offers>> GetOffersByHelpRequestIdAsync(int helpRequestId)
+        public async Task<ICollection<Offers>> GetOffersByHelpRequestIdAsync(int helpRequestId)
         {
-            return await _context.Offers.AsNoTracking().Where(o => o.HelpRequestId == helpRequestId).ToListAsync();
+            return await _context.Offers.Where(o => o.HelpRequestId == helpRequestId).ToListAsync();
         }
         public async Task<HelpRequests?> GetHelpRequestByIdAsync(int helpRequestId)
         {

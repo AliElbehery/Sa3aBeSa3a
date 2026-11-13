@@ -9,6 +9,6 @@ namespace Sa3aBeSa3a.Domain.Interfaces.Services
         Task<Offers?> GetOfferByIdAsync(int id);
         Task<IReadOnlyList<Offers>> GetAllOffersAsync();
         Task<IReadOnlyList<Offers>> GetOffersByHelpRequestIdAsync(int helpRequestId);
-        Task<Offers> AcceptOfferAsync(int offerId);
+        Task<Offers> AcceptOfferAsync(int offerId, int userId);
     }
 }
