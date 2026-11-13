@@ -10,6 +10,7 @@ namespace Sa3aBeSa3a.Application
         this IServiceCollection services)
         {
             services.AddScoped<IHelpRequestServices, HelpRequestServices>();
+            services.AddScoped<IOfferServices, OfferServices>();
 
             return services;
         }
