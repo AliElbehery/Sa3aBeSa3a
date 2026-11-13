@@ -76,10 +76,6 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new InvalidOperationException($"Only the owner of the help request can accept an offer.");
             }
-            if(offer.HelpRequest.Status != HelpRequestStatus.Open)
-            {
-                throw new InvalidOperationException($"Cannot accept an offer for a help request that is not open.");
-            })
             if (!offer.Member.IsActive)
             {
                 throw new InvalidOperationException($"Inactive members cannot accept offers.");

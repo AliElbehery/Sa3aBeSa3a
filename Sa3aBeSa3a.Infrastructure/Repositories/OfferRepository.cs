@@ -66,7 +66,7 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         public async Task<decimal> GetLockedHoursAsync(int memberId)
         {
             var lockedHours = await _context.Offers
-                .Where(o => o.MemberId == memberId && o.Status == OfferStatus.Accepted)
+                .Where(o => o.MemberId == memberId && o.Status == OfferStatus.Accepted && o.HelpRequest.Status == HelpRequestStatus.InProgress)
                 .SumAsync(o => (decimal?)o.OfferedHours) ?? 0;
             return lockedHours;
         }
