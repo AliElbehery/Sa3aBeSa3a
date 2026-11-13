@@ -63,7 +63,42 @@ namespace Sa3aBeSa3a.Application.Services
         }
         public async Task<IReadOnlyList<Offers>> GetOffersByHelpRequestIdAsync(int helpRequestId)
         {
-            return await repository.GetOfferByHelpRequestIdAsync(helpRequestId);
+            return await repository.GetOffersByHelpRequestIdAsync(helpRequestId);
+        }
+        public async Task<Offers> AcceptOfferAsync(int offerId)
+        {
+            var offer = await repository.GetByIdAsync(offerId);
+            if(!offer.Member.IsActive)
+            {
+                throw new InvalidOperationException($"Inactive members cannot accept offers.");
+            }
+            if (offer == null)
+            {
+                throw new ArgumentException($"Offer with ID {offerId} does not exist.");
+            }
+            if (offer.Status != OfferStatus.Pending)
+            {
+                throw new InvalidOperationException($"Only pending offers can be accepted.");
+            }
+            if(offer.HelpRequest.Status != HelpRequestStatus.Open)
+            {
+                throw new InvalidOperationException($"Cannot accept an offer for a help request that is not open.");
+            }
+            if(await repository.GetMemberBalanceAsync(offer.MemberId) < offer.OfferedHours || await repository.GetLockedHoursAsync(offer.MemberId) < offer.OfferedHours)
+            {
+                throw new InvalidOperationException($"Member does not have enough balance to accept this offer.");
+            }
+
+            offer.Status = OfferStatus.Accepted;
+            foreach(var o in await repository.GetOffersByHelpRequestIdAsync(offer.HelpRequestId))
+            {
+                if(o.Id != offerId)
+                {
+                    o.Status = OfferStatus.Rejected;
+                }
+            }
+            await repository.SaveChangesAsync();
+            return offer;
         }
     }
 }

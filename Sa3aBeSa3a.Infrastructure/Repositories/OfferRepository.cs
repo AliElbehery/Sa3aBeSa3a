@@ -30,7 +30,7 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         }
         public async Task<Offers?> GetByIdAsync(int id)
         {
-            return await _context.Offers.FindAsync(id);
+            return await _context.Offers.Include(o => o.Member).Include(o => o.HelpRequest).ThenInclude(h => h.MemberId).FirstOrDefaultAsync(o => o.Id == id);
         }
         public async Task<IReadOnlyList<Offers>> GetAllAsync()
         {
@@ -44,7 +44,7 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         {
             return await _context.Members.Include(m => m.MemberSkills).FirstOrDefaultAsync(m => m.Id == memberId);
         }
-        public async Task<IReadOnlyList<Offers>> GetOfferByHelpRequestIdAsync(int helpRequestId)
+        public async Task<IReadOnlyList<Offers>> GetOffersByHelpRequestIdAsync(int helpRequestId)
         {
             return await _context.Offers.AsNoTracking().Where(o => o.HelpRequestId == helpRequestId).ToListAsync();
         }
@@ -56,6 +56,22 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         {
             return await _context.Offers.AnyAsync(o => o.MemberId == memberId && o.HelpRequestId == helpRequestId);
         }
+        public async Task<decimal> GetMemberBalanceAsync(int memberId)
+        {
+
+            return await _context.LedgerEntries.Where(l => l.MemberId == memberId).SumAsync(l => (decimal?)l.Amount) ?? 0;
+
+
+        }
+        public async Task<decimal> GetLockedHoursAsync(int memberId)
+        {
+            var lockedHours = await _context.Offers
+                .Where(o => o.MemberId == memberId && o.Status == OfferStatus.Accepted)
+                .SumAsync(o => (decimal?)o.OfferedHours) ?? 0;
+            return lockedHours;
+        }
+        
+
 
     }
 }
