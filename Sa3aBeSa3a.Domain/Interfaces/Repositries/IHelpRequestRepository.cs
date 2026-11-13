@@ -7,8 +7,9 @@ namespace Sa3aBeSa3a.Domain.Interfaces.Repositries
     {
         Task<HelpRequests> AddAsync(int userId, CreateHelpRequestDto dto);
         Task<HelpRequests?> GetByIdAsync(int id);
-        Task<IReadOnlyList<HelpRequests?>?> GetAllAsync();
+        Task<IReadOnlyList<HelpRequests>> GetAllAsync();
         Task SaveChangesAsync();
         Task<Members?> GetMemberById(int memberId);
+        Task<Categories?> GetCategoryByIdAsync(int categoryId);
     }
 }

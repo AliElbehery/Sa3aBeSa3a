@@ -30,11 +30,15 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
             await _context.HelpRequests.AddAsync(helpRequest);
             return helpRequest;
         }
+        public async Task<Categories?> GetCategoryByIdAsync(int categoryId)
+        {
+            return await _context.Categories.FindAsync(categoryId);
+        }
         public async Task<HelpRequests?> GetByIdAsync(int id)
         {
             return await _context.HelpRequests.FindAsync(id);
         }
-        public async Task<IReadOnlyList<HelpRequests?>?> GetAllAsync()
+        public async Task<IReadOnlyList<HelpRequests>> GetAllAsync()
         {
             var helpRequests = await _context.HelpRequests.AsNoTracking().ToListAsync();
             return helpRequests;

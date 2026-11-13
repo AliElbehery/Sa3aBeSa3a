@@ -15,19 +15,19 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new KeyNotFoundException($"User with ID {userId} not found.");
             }
+            if (await helpRequestRepository.GetCategoryByIdAsync(dto.CategoryId) == null)
+            {
+                throw new KeyNotFoundException($"Category with ID {dto.CategoryId} not found.");
+            }
             if (!user.IsActive)
             {
                 throw new InvalidOperationException("Only active users can create help requests.");
-            }
-            if (dto.CategoryId <= 0)
-            {
-                throw new ArgumentException("CategoryId must be a positive integer.");
             }
             if (dto.NeededBy <= DateTime.UtcNow)
             {
                 throw new ArgumentException("NeededBy date must be in the future.");
             }
-            if (dto.HoursNeeded == 0.5m || dto.HoursNeeded == 8.0m || dto.HoursNeeded % 0.5m != 0)
+            if (dto.HoursNeeded < 0.5m || dto.HoursNeeded > 8.0m || dto.HoursNeeded % 0.5m != 0)
             {
                 throw new ArgumentException("HoursNeeded must be between 0.5 and 8.0 hours in 0.5 increments");
             }
@@ -49,7 +49,7 @@ namespace Sa3aBeSa3a.Application.Services
             }
             return helpRequest;
         }
-        public async Task<IReadOnlyList<HelpRequests?>?> GetAllHelpRequestsAsync()
+        public async Task<IReadOnlyList<HelpRequests?>> GetAllHelpRequestsAsync()
         {
             var helpRequests = await helpRequestRepository.GetAllAsync();
             if (helpRequests == null)
