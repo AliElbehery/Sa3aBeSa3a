@@ -25,43 +25,37 @@ namespace Sa3aBeSa3a.Infrastructure.Data
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         }
-        private void ValidateLedgerEntries()
+        private void ValidateLedgerEntriesAndAuditLogs()
         {
             ChangeTracker.DetectChanges();
 
-            var hasInvalidChanges = ChangeTracker
+            var hasLedgerEntryChanges = ChangeTracker
                 .Entries<LedgerEntries>()
                 .Any(entry =>
                     entry.State == EntityState.Modified ||
                     entry.State == EntityState.Deleted);
-
-            if (hasInvalidChanges)
-            {
-                throw new InvalidOperationException(
-                    "Ledger entries cannot be modified or deleted.");
-            }
-        }
-        private void ValidateAuditLogs()
-        {
-            ChangeTracker.DetectChanges();
-
-            var hasInvalidChanges = ChangeTracker
+            var hasAuditLogChanges = ChangeTracker
                 .Entries<AuditLogs>()
                 .Any(entry =>
                     entry.State == EntityState.Modified ||
                     entry.State == EntityState.Deleted);
 
-            if (hasInvalidChanges)
+            if (hasLedgerEntryChanges)
+            {
+                throw new InvalidOperationException(
+                    "Ledger entries cannot be modified or deleted.");
+            }
+            if (hasAuditLogChanges)
             {
                 throw new InvalidOperationException(
                     "Audit logs cannot be modified or deleted.");
             }
         }
+        
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
-            ValidateLedgerEntries();
-            ValidateAuditLogs();
+            ValidateLedgerEntriesAndAuditLogs();
 
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
@@ -70,8 +64,7 @@ namespace Sa3aBeSa3a.Infrastructure.Data
             bool acceptAllChangesOnSuccess,
             CancellationToken cancellationToken = default)
         {
-            ValidateLedgerEntries();
-            ValidateAuditLogs();
+            ValidateLedgerEntriesAndAuditLogs();
 
             return base.SaveChangesAsync(
                 acceptAllChangesOnSuccess,

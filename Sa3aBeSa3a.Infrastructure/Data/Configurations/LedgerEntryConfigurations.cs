@@ -14,6 +14,8 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .IsRequired()
                 .HasPrecision(10, 2);
             builder.Property(le => le.TransactionType)
+                .IsRequired()
+                .HasMaxLength(20)
                 .HasConversion(
                     v => v.ToString(),
                     v => (TransactionTypes)Enum.Parse(typeof(TransactionTypes), v));

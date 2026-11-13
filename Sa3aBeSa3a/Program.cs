@@ -32,6 +32,7 @@ namespace Sa3aBeSa3a
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            app.UseAuthorization();
 
 
             app.MapControllers();
