@@ -25,8 +25,7 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
                 OfferDate = DateTime.UtcNow,
                 Status = OfferStatus.Pending // Assuming you have an enum for offer status
             };
-            _context.Offers.Add(offer);
-            await SaveChangesAsync();
+            await _context.Offers.AddAsync(offer);
             return offer;
         }
         public async Task<Offers?> GetByIdAsync(int id)
@@ -44,10 +43,6 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         public async Task<Members?> GetMemberById(int memberId)
         {
             return await _context.Members.Include(m => m.MemberSkills).FirstOrDefaultAsync(m => m.Id == memberId);
-        }
-        public async Task<Skills?> GetSkillsByIdAsync(int skillId)
-        {
-            return await _context.Skills.FindAsync(skillId);
         }
         public async Task<IReadOnlyList<Offers>> GetOfferByHelpRequestIdAsync(int helpRequestId)
         {

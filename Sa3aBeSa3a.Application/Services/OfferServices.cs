@@ -44,12 +44,13 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new ArgumentException($"Message cannot exceed 500 characters.");
             }
-            if (!helpRequest.Category.Skills.Any(s =>  member.MemberSkills.Any(ms => ms.SkillId == s.Id));
+            if (!helpRequest.Category.Skills.Any(s =>  member.MemberSkills.Any(ms => ms.SkillId == s.Id)))
             {
                 throw new InvalidOperationException($"Member does not have the required skill to make an offer on this help request.");
             }
 
             var offer = await repository.AddAsync(userId, helpRequestId, dto);
+            await repository.SaveChangesAsync();
             return offer;
         }
         public async Task<Offers?> GetOfferByIdAsync(int id)
