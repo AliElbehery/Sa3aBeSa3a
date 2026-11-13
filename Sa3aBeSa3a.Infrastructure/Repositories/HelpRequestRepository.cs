@@ -13,7 +13,7 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<HelpRequests> AddAsync(CreateHelpRequestDto dto)
+        public async Task<HelpRequests> AddAsync(int userId, CreateHelpRequestDto dto)
         {
             var helpRequest = new HelpRequests
             {
@@ -24,16 +24,17 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
                 NeededBy = dto.NeededBy,
                 RequestDate = DateTime.UtcNow,
                 Status = Domain.Enums.HelpRequestStatus.Open,
-                District = dto.District
+                District = dto.District,
+                MemberId = userId
             };
             await _context.HelpRequests.AddAsync(helpRequest);
             return helpRequest;
         }
-        public async Task<HelpRequests> GetByIdAsync(int id)
+        public async Task<HelpRequests?> GetByIdAsync(int id)
         {
             return await _context.HelpRequests.FindAsync(id);
         }
-        public async Task<IReadOnlyList<HelpRequests>> GetAllAsync()
+        public async Task<IReadOnlyList<HelpRequests?>?> GetAllAsync()
         {
             var helpRequests = await _context.HelpRequests.AsNoTracking().ToListAsync();
             return helpRequests;
@@ -42,6 +43,10 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+        public async Task<Members?> GetMemberById(int memberId)
+        {
+            return await _context.Members.FindAsync(memberId);
         }
     }
 }

@@ -8,25 +8,39 @@ namespace Sa3aBeSa3a.Application.Services
 {
     public class HelpRequestServices(IHelpRequestRepository helpRequestRepository) : IHelpRequestServices
     {
-        public async Task<HelpRequests> CreateHelpRequestAsync(CreateHelpRequestDto dto)
+        public async Task<HelpRequests> CreateHelpRequestAsync(int userId, CreateHelpRequestDto dto)
         {
+            var user = await helpRequestRepository.GetMemberById(userId);
+            if (user == null)
+            {
+                throw new KeyNotFoundException($"User with ID {userId} not found.");
+            }
+            if (!user.IsActive)
+            {
+                throw new InvalidOperationException("Only active users can create help requests.");
+            }
+            if (dto.CategoryId <= 0)
+            {
+                throw new ArgumentException("CategoryId must be a positive integer.");
+            }
             if (dto.NeededBy <= DateTime.UtcNow)
             {
                 throw new ArgumentException("NeededBy date must be in the future.");
             }
-            if (dto.HoursNeeded <= 0.5m || dto.HoursNeeded >= 8.0m || dto.HoursNeeded % 0.5m != 0)
+            if (dto.HoursNeeded == 0.5m || dto.HoursNeeded == 8.0m || dto.HoursNeeded % 0.5m != 0)
             {
-                throw new ArgumentException("HoursNeeded must be between 0.5 and 8.0 hours, and must be a multiple of 0.5 hours.");
+                throw new ArgumentException("HoursNeeded must be between 0.5 and 8.0 hours in 0.5 increments");
             }
             if (string.IsNullOrWhiteSpace(dto.Title) || string.IsNullOrWhiteSpace(dto.Description) || string.IsNullOrWhiteSpace(dto.District))
             {
                 throw new ArgumentException("Title, Description, and District cannot be empty.");
             }
-            var helpRequest = await helpRequestRepository.AddAsync(dto);
+            var helpRequest = await helpRequestRepository.AddAsync(userId, dto);
+
             await helpRequestRepository.SaveChangesAsync();
             return helpRequest;
         }
-        public async Task<HelpRequests> GetHelpRequestByIdAsync(int id)
+        public async Task<HelpRequests?> GetHelpRequestByIdAsync(int id)
         {
             var helpRequest = await helpRequestRepository.GetByIdAsync(id);
             if (helpRequest == null)
@@ -35,10 +49,10 @@ namespace Sa3aBeSa3a.Application.Services
             }
             return helpRequest;
         }
-        public async Task<IReadOnlyList<HelpRequests>> GetAllHelpRequestsAsync()
+        public async Task<IReadOnlyList<HelpRequests?>?> GetAllHelpRequestsAsync()
         {
             var helpRequests = await helpRequestRepository.GetAllAsync();
-            if (helpRequests == null || !helpRequests.Any())
+            if (helpRequests == null)
             {
                 throw new KeyNotFoundException("No help requests found.");
             }

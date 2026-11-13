@@ -5,9 +5,10 @@ namespace Sa3aBeSa3a.Domain.Interfaces.Repositries
 {
     public interface IHelpRequestRepository
     {
-        Task<HelpRequests> AddAsync(CreateHelpRequestDto dto);
-        Task<HelpRequests> GetByIdAsync(int id);
-        Task<IReadOnlyList<HelpRequests>> GetAllAsync();
+        Task<HelpRequests> AddAsync(int userId, CreateHelpRequestDto dto);
+        Task<HelpRequests?> GetByIdAsync(int id);
+        Task<IReadOnlyList<HelpRequests?>?> GetAllAsync();
         Task SaveChangesAsync();
+        Task<Members?> GetMemberById(int memberId);
     }
 }
