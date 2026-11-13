@@ -4,7 +4,7 @@ using Sa3aBeSa3a.Domain.Entities;
 
 namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
 {
-    public class CategoriyConfigurations : IEntityTypeConfiguration<Categories>
+    public class CategoryConfigurations : IEntityTypeConfiguration<Categories>
     {
         public void Configure(EntityTypeBuilder<Categories> builder)
         {

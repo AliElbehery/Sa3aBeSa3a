@@ -17,7 +17,6 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .WithMany()
                 .HasForeignKey(mb => mb.BadgeId)
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.HasIndex(mb => new { mb.MemberId, mb.BadgeId }).IsUnique();
         }
     
     }

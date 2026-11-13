@@ -18,7 +18,7 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .HasForeignKey(r => r.RevieweeId)
                 .OnDelete(DeleteBehavior.Restrict);
             builder.Property(r => r.Comment)
-                .HasMaxLength(1000);
+                .HasMaxLength(300);
             builder.Property(r => r.Rating)
                 .IsRequired();
             builder.ToTable("Reviews", table =>
@@ -28,7 +28,14 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                     "[Rating] >= 1 AND [Rating] <= 5"
                 );
             });
-            builder.HasIndex(r => new { r.ReviewerId, r.RevieweeId, r.HelpRequestId }).IsUnique();
+            builder.HasIndex(r => new { r.ReviewerId,  r.HelpRequestId }).IsUnique();
+            builder.Property(r => r.ReviewDate)
+                .IsRequired()
+                .HasDefaultValueSql("SYSUTCDATETIME()");
+            builder.HasOne(r => r.HelpRequest)
+                   .WithMany()
+                   .HasForeignKey(r => r.HelpRequestId)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     
     }

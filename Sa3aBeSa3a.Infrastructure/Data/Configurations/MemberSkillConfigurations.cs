@@ -18,7 +18,6 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .WithMany()
                 .HasForeignKey(ms => ms.SkillId)
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.HasIndex(ms => new { ms.MemberId, ms.SkillId }).IsUnique();
         }
     }
 }

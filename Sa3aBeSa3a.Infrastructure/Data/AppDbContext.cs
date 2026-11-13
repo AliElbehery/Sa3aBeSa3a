@@ -12,7 +12,7 @@ namespace Sa3aBeSa3a.Infrastructure.Data
         public DbSet<Members> Members { get; set; }
         public DbSet<HelpRequests> HelpRequests { get; set; }
         public DbSet<Offers> Offers { get; set; }
-        public DbSet<Auditlogs> Auditlogs { get; set; }
+        public DbSet<AuditLogs> AuditLogs { get; set; }
         public DbSet<LedgerEntries> LedgerEntries { get; set; }
         public DbSet<Skills> Skills { get; set; }
         public DbSet<Categories> Categories { get; set; }

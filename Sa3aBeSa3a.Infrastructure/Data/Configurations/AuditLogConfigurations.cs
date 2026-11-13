@@ -21,6 +21,9 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
             builder.Property(al => al.CreatedAt)
                 .IsRequired()
                 .HasDefaultValueSql("SYSUTCDATETIME()");
+            builder.Property(al => al.Actor)
+                   .IsRequired()
+                   .HasMaxLength(100);
 
         }
     
