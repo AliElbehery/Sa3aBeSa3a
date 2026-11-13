@@ -40,13 +40,13 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .IsRequired()
                 .HasDefaultValueSql("SYSUTCDATETIME()");
             builder.Property(m => m.Role)
-                .IsRequired()
-                .HasConversion(
-                    v => v.ToString(),
-                    v => (MemberRole)Enum.Parse(typeof(MemberRole), v));
+                   .IsRequired()
+                   .HasDefaultValue(MemberRole.Member)
+                   .HasConversion(
+                       v => v.ToString(),
+                       v => (MemberRole)Enum.Parse(typeof(MemberRole), v));
             builder.Property(m => m.IsActive)
-                .IsRequired()
-                .HasDefaultValue(true);
+                   .IsRequired();
         }
 
     }

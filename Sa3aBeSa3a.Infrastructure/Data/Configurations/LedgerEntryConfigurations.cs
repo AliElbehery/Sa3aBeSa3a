@@ -17,6 +17,23 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .HasConversion(
                     v => v.ToString(),
                     v => (TransactionTypes)Enum.Parse(typeof(TransactionTypes), v));
+            builder.ToTable("LedgerEntries", table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_LedgerEntries_Amount",
+                    """
+                    (
+                        [TransactionType] IN ('WelcomeBonus', 'Credit')
+                          AND [Amount] > 0
+                    )
+                    OR
+                    (
+                        [TransactionType] = 'Debit'
+                        AND [Amount] < 0
+                    )
+                    """
+                );
+            });
             builder.HasOne(le => le.Member)
                 .WithMany(m => m.LedgerEntries)
                 .HasForeignKey(le => le.MemberId)

@@ -6,9 +6,9 @@ namespace Sa3aBeSa3a.Domain.Entities
     {
         public int Id { get; set; }
         public int HelpRequestId { get; set; }
-        public HelpRequests HelpRequest { get; set; }
+        public HelpRequests HelpRequest { get; set; } = null!;
         public int MemberId { get; set; }
-        public Members Member { get; set; }
+        public Members Member { get; set; } = null!;
         public decimal OfferedHours { get; set; }
         public DateTime OfferDate { get; set; }
         public OfferStatus Status { get; set; } // e.g., Pending, Accepted, Rejected
