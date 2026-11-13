@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sa3aBeSa3a.Domain.Entities
 {
-    public class Auditlogs
+    public class AuditLogs
     {
         public int Id { get; set; }
         public string Actor { get; set; }

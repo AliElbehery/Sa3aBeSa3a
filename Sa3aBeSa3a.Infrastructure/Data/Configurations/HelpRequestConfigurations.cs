@@ -36,7 +36,7 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                    .WithMany()
                    .HasForeignKey(hr => hr.CategoryId)
                    .OnDelete(DeleteBehavior.Restrict);
-            builder.Property(o => o.Status)
+            builder.Property(hr => hr.Status)
                 .HasConversion(
                     v => v.ToString(),
                     v => (HelpRequestStatus)Enum.Parse(typeof(HelpRequestStatus), v));

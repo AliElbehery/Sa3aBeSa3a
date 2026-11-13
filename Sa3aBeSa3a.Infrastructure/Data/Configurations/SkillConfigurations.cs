@@ -13,7 +13,7 @@ namespace Sa3aBeSa3a.Infrastructure.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
             builder.HasOne(s => s.Category)
-                .WithMany()
+                .WithMany(c => c.Skills)
                 .HasForeignKey(s => s.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
         }

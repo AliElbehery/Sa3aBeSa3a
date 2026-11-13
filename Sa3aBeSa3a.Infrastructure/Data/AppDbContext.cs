@@ -5,7 +5,6 @@ namespace Sa3aBeSa3a.Infrastructure.Data
 {
     public class AppDbContext : DbContext
     {
-        public const string ConnectionString = "Server=localhost\\SQLEXPRESS;Database=Sa3aBeSa3aDb;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true";
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -26,13 +25,6 @@ namespace Sa3aBeSa3a.Infrastructure.Data
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(ConnectionString);
-            }
-
-        }
+        
     }
 }
