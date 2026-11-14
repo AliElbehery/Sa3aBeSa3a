@@ -72,5 +72,10 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
             await _context.LedgerEntries.AddAsync(credit);
             return helpRequest;
         }
+        public async Task<Offers?> GetAcceptedOfferAsync(int helpRequestId)
+        {
+            var acceptedOffer = await _context.Offers.FirstOrDefaultAsync(o => o.HelpRequestId == helpRequestId && o.Status == OfferStatus.Accepted);
+            return acceptedOffer;
+        }
     }
 }

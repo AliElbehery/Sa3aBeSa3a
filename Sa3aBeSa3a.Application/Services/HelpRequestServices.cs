@@ -59,6 +59,10 @@ namespace Sa3aBeSa3a.Application.Services
         }
         public async Task<HelpRequests> CompleteHelpRequestAsync(HelpRequests helpRequest, int ownerId, int helperId, decimal hoursWorked)
         {
+            if(hoursWorked <= .5m || hoursWorked > 8.0m || hoursWorked % 0.5m != 0)
+            {
+                throw new ArgumentException("Hours worked must be between 0.5 and 8.0 hours in 0.5 increments.");
+            }
             if (helpRequest == null)
             {
                 throw new ArgumentNullException(nameof(helpRequest), "Help request cannot be null.");
@@ -71,11 +75,24 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new InvalidOperationException("Help request must be in progress to be completed.");
             }
-            if (hoursWorked <= 0 || hoursWorked > helpRequest.HoursNeeded)
+            if(helpRequest.Offers.Any(o => o.Status == OfferStatus.Accepted))
+            {
+                throw new InvalidOperationException("The help request must have an accepted offer to be completed.");
+            }
+            var acceptedOffer = await helpRequestRepository.GetAcceptedOfferAsync(helpRequest.Id);
+            if (acceptedOffer?.MemberId != helperId )
+            {
+                throw new InvalidOperationException("The specified helper does not have an accepted offer for this help request.");
+            }
+            if(acceptedOffer?.OfferedHours < hoursWorked)
+            {
+                throw new InvalidOperationException("Hours worked cannot exceed the offered hours.");
+            }
+            if(hoursWorked <= 0 || hoursWorked > helpRequest.HoursNeeded)
             {
                 throw new ArgumentException("Hours worked must be greater than 0 and less than or equal to the hours needed.");
             }
-            helpRequestRepository.CompleteHelpRequestAsync(helpRequest, ownerId, helperId, hoursWorked);
+            await helpRequestRepository.CompleteHelpRequestAsync(helpRequest, ownerId, helperId, hoursWorked);
 
             await helpRequestRepository.SaveChangesAsync();
             return helpRequest;

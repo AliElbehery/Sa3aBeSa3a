@@ -12,5 +12,6 @@ namespace Sa3aBeSa3a.Domain.Interfaces.Repositries
         Task<Members?> GetMemberById(int memberId);
         Task<Categories?> GetCategoryByIdAsync(int categoryId);
         Task<HelpRequests> CompleteHelpRequestAsync(HelpRequests helpRequest, int ownerId, int helperId, decimal hoursWorked);
+        Task<Offers?> GetAcceptedOfferAsync(int helpRequestId);
     }
 }
