@@ -71,15 +71,15 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new UnauthorizedAccessException("You do not have permission to complete this help request.");
             }
-            if(helpRequest.Status != HelpRequestStatus.InProgress)
+            if (helpRequest.Status != HelpRequestStatus.InProgress)
             {
                 throw new InvalidOperationException("Help request must be in progress to be completed.");
             }
-            if(!helpRequest.Offers.Any(o => o.Status == OfferStatus.Accepted))
-            {
-                throw new InvalidOperationException("The help request must have an accepted offer to be completed.");
-            }
             var acceptedOffer = await helpRequestRepository.GetAcceptedOfferAsync(helpRequest.Id);
+            if(acceptedOffer == null)
+            {
+                throw new InvalidOperationException("No accepted offer found for this help request.");
+            }
             if (acceptedOffer?.MemberId != helperId )
             {
                 throw new InvalidOperationException("The specified helper does not have an accepted offer for this help request.");
