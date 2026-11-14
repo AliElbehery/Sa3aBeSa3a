@@ -59,7 +59,7 @@ namespace Sa3aBeSa3a.Application.Services
         }
         public async Task<HelpRequests> CompleteHelpRequestAsync(HelpRequests helpRequest, int ownerId, int helperId, decimal hoursWorked)
         {
-            if(hoursWorked <= .5m || hoursWorked > 8.0m || hoursWorked % 0.5m != 0)
+            if(hoursWorked < .5m || hoursWorked > 8.0m || hoursWorked % 0.5m != 0)
             {
                 throw new ArgumentException("Hours worked must be between 0.5 and 8.0 hours in 0.5 increments.");
             }
@@ -75,7 +75,7 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new InvalidOperationException("Help request must be in progress to be completed.");
             }
-            if(helpRequest.Offers.Any(o => o.Status == OfferStatus.Accepted))
+            if(!helpRequest.Offers.Any(o => o.Status == OfferStatus.Accepted))
             {
                 throw new InvalidOperationException("The help request must have an accepted offer to be completed.");
             }
