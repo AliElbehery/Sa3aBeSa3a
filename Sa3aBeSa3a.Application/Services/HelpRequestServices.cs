@@ -60,13 +60,14 @@ namespace Sa3aBeSa3a.Application.Services
         public async Task<HelpRequests> CompleteHelpRequestAsync(int helpRequestId, int ownerId, int helperId, decimal hoursWorked)
         {
             var helpRequest = await helpRequestRepository.GetByIdAsync(helpRequestId);
-            if(hoursWorked < .5m || hoursWorked > 8.0m || hoursWorked % 0.5m != 0)
-            {
-                throw new ArgumentException("Hours worked must be between 0.5 and 8.0 hours in 0.5 increments.");
-            }
+
             if (helpRequest == null)
             {
-                throw new ArgumentNullException(nameof(helpRequest), "Help request cannot be null.");
+                throw new KeyNotFoundException($"Help request with ID {helpRequestId} not found.");
+            }
+            if (hoursWorked < .5m || hoursWorked > 8.0m || hoursWorked % 0.5m != 0)
+            {
+                throw new ArgumentException("Hours worked must be between 0.5 and 8.0 hours in 0.5 increments.");
             }
             if (helpRequest.MemberId != ownerId)
             {
@@ -89,7 +90,7 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new InvalidOperationException("Hours worked cannot exceed the offered hours.");
             }
-            if(hoursWorked <= 0 || hoursWorked > helpRequest.HoursNeeded)
+            if(hoursWorked > helpRequest.HoursNeeded)
             {
                 throw new ArgumentException("Hours worked must be greater than 0 and less than or equal to the hours needed.");
             }
