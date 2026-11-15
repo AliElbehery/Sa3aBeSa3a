@@ -6,6 +6,6 @@ namespace Sa3aBeSa3a.Domain.Interfaces.Services
 {
     public interface IAuthServices
     {
-        Task<MemberDto> RegisterAsync(RegisterDto dto);
+        Task<AuthResultDtos> RegisterAsync(RegisterDto dto);
     }
 }

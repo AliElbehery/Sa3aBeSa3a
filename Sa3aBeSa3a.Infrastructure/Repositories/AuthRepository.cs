@@ -44,7 +44,8 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         }
         public async Task<bool> IsEmailExistsAsync(string email)
         {
-            return await _context.Members.AnyAsync(m => m.Email == email);
+            var e = email.Trim().ToLowerInvariant();
+            return await _context.Members.AnyAsync(m => m.Email == e);
         }
         public async Task<IReadOnlyList<Members>> GetAllAsync()
         {
