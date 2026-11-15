@@ -4,9 +4,7 @@ using Sa3aBeSa3a.Domain.Entities;
 using Sa3aBeSa3a.Domain.Interfaces;
 using Sa3aBeSa3a.Domain.Interfaces.Repositries;
 using Sa3aBeSa3a.Domain.Interfaces.Services;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Principal;
+
 
 namespace Sa3aBeSa3a.Application.Services
 {
@@ -16,7 +14,8 @@ namespace Sa3aBeSa3a.Application.Services
         private static readonly string DummyHash = Hasher.HashPassword(new Members(), "Dummy-Password-1");
         public async Task<AuthResultDtos> RegisterAsync(RegisterDto dto)
         {
-            if(dto.Email == null || dto.Password == null || dto.PhoneNumber == null || dto.Name == null)
+            if(string.IsNullOrEmpty(dto.Name) || string.IsNullOrEmpty(dto.Email) || 
+                string.IsNullOrEmpty(dto.Password) || string.IsNullOrEmpty(dto.PhoneNumber))
             {
                 throw new ArgumentException("Missing Inputs");
             }
@@ -36,6 +35,10 @@ namespace Sa3aBeSa3a.Application.Services
         }
         public async Task<AuthResultDtos> LoginAsync(LoginDto dto)
         {
+            if(string.IsNullOrEmpty(dto.Email) || (string.IsNullOrEmpty(dto.Password)))
+            {
+                throw new Exception("Email and password can't be null or empty");
+            }
             var email = dto.Email.Trim().ToLowerInvariant();
             var member =await authRepository.GetByEmailAsync(email);
             if(member == null)

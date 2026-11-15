@@ -27,11 +27,11 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
             await _context.Members.AddAsync(member);
             return member;
         }
-        public async Task<Members> GetByEmailAsync(string email)
+        public async Task<Members?> GetByEmailAsync(string email)
         {
             return await _context.Members.FirstOrDefaultAsync(m => m.Email == email);
         }
-        public async Task<Members> GetByIdAsync(int id)
+        public async Task<Members?> GetByIdAsync(int id)
         {
             return await _context.Members.FirstOrDefaultAsync(m => m.Id == id);
         }
