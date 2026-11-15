@@ -10,7 +10,7 @@ namespace Sa3aBeSa3a.Controllers
 {
     [ApiController]
     [Route("api/auth")]
-    public class AuthController(IAuthServices auth, IAuthRepository authRepository) : ControllerBase
+    public class AuthController(IAuthServices auth) : ControllerBase
     {
         [HttpPost("register")]
         [AllowAnonymous]
@@ -27,6 +27,8 @@ namespace Sa3aBeSa3a.Controllers
         [HttpGet("me")]
         [Authorize]
         public async Task<ActionResult<MemberDto>> Me()
-       => await authRepository.GetProfileAsync(User.GetUserId());
+        {
+            return await auth.GetProfileAsync(User.GetUserId());
+        }
     }
 }

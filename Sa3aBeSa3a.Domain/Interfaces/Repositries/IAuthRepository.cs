@@ -11,7 +11,7 @@ namespace Sa3aBeSa3a.Domain.Interfaces.Repositries
         Task SaveChangesAsync();
         Task<bool> IsEmailExistsAsync(string email);
         Task<IReadOnlyList<Members>> GetAllAsync();
-        Task<MemberDto> GetProfileAsync(int memberId);
+        Task<Members?> GetProfileAsync(int memberId);
 
     }
 }

@@ -7,5 +7,6 @@ namespace Sa3aBeSa3a.Domain.Interfaces.Services
     {
         Task<AuthResultDtos> RegisterAsync(RegisterDto dto);
         Task<AuthResultDtos> LoginAsync(LoginDto dto);
+        Task<MemberDto> GetProfileAsync(int id);
     }
 }

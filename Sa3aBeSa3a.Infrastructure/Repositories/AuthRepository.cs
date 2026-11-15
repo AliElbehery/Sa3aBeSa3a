@@ -58,8 +58,8 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         }
         public async Task<Members?> GetProfileAsync(int memberId)
         {
-            var member = await _context.Members.AsNoTracking().FirstOrDefaultAsync(m => m.Id == memberId)
-           return member;
+            var member = await _context.Members.AsNoTracking().FirstOrDefaultAsync(m => m.Id == memberId);
+            return member;
         }
 
 
