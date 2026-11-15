@@ -33,7 +33,6 @@ namespace Sa3aBeSa3a
                 throw new InvalidOperationException(
                     "Jwt:Key is missing or shorter than 32 characters. " +
                     "Set it with: dotnet user-secrets set \"Jwt:Key\" \"<random 32+ chars>\" (or an environment variable Jwt__Key).");
-            builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.Section));
             builder.Services
             .AddAuthentication(o =>
             {
