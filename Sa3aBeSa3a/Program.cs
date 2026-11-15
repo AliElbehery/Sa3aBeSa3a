@@ -76,9 +76,9 @@ namespace Sa3aBeSa3a
 
             builder.Services.AddAuthorization(o =>
             {
-                o.AddPolicy("EmployeeOnly", p => p.RequireRole("Employee"));
-                o.AddPolicy("PassengerOnly", p => p.RequireRole("User"));
-                o.AddPolicy("AdminOnly", p => p.RequireRole("Admin"));
+                o.AddPolicy("MembersOnly", p => p.RequireRole("Member"));
+                o.AddPolicy("ModeratorsOnly", p => p.RequireRole("Moderator"));
+                
             });
 
             builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.Section));
