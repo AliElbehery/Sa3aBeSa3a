@@ -11,8 +11,7 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
 {
     public class AuthRepository(AppDbContext _context) : IAuthRepository
     {
-        private static readonly PasswordHasher<Members> Hasher = new();
-        private static readonly string DummyHash = Hasher.HashPassword(new Members(), "Dummy-Password-1");
+        
         
         public async Task<Members> AddAsync(RegisterDto dto)
         {
@@ -23,10 +22,8 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
                 PhoneNumber = dto.PhoneNumber,
                 JoinedDate = DateTime.UtcNow,
                 Role = MemberRole.Member,
-                IsActive = true
-
+                IsActive = true,
             };
-            member.PasswordHash = Hasher.HashPassword(member, dto.Password);
             await _context.Members.AddAsync(member);
             return member;
         }

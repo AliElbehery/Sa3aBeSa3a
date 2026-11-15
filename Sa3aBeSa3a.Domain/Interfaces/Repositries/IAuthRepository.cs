@@ -1,5 +1,6 @@
 ﻿using Sa3aBeSa3a.Domain.Entities;
 using Sa3aBeSa3a.Domain.Dtos;
+using Microsoft.AspNetCore.Identity;
 
 namespace Sa3aBeSa3a.Domain.Interfaces.Repositries
 {
