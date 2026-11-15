@@ -24,6 +24,13 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
                 Role = MemberRole.Member,
                 IsActive = true,
             };
+            var bonus = new LedgerEntries
+            {
+                Member = member,
+                Amount = 2,
+                Date = DateTime.UtcNow,
+                TransactionType = TransactionTypes.WelcomeBonus
+            };
             await _context.Members.AddAsync(member);
             return member;
         }
@@ -48,6 +55,14 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         {
             return await _context.Members.ToListAsync();
         }
+        public async Task<MemberDto> GetProfileAsync(int memberId)
+        {
+            var member = await _context.Members.AsNoTracking().FirstOrDefaultAsync(m => m.Id == memberId)
+                       ?? throw new Exception("User not found.");
+            return ToDto(member);
+        }
+        private static MemberDto ToDto(Members u)
+            => new MemberDto { MemberId = u.Id, Name = u.Name, Email = u.Email, Phone = u.PhoneNumber, Role = u.Role };
 
     }
 }

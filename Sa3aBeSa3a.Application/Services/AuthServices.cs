@@ -23,10 +23,6 @@ namespace Sa3aBeSa3a.Application.Services
             {
                 throw new ArgumentException("The Email is already exist");
             }
-            if(string.IsNullOrEmpty(dto.Name))
-            {
-                throw new ArgumentException("Name can't be null or empty");
-            }
             var member = await authRepository.AddAsync(dto);
             var hashed = Hasher.HashPassword(member, dto.Password);
             member.PasswordHash = hashed;
@@ -69,6 +65,7 @@ namespace Sa3aBeSa3a.Application.Services
             return new AuthResultDtos(t.Token, t.ExpiresAt, ToDto(member));
         }
         private static MemberDto ToDto(Members u)
-            => new(u.Id, u.Name, u.Email, u.PhoneNumber, u.Role);
+            => new MemberDto { MemberId = u.Id, Name = u.Name, Email = u.Email, Phone = u.PhoneNumber, Role = u.Role };
+
     }
 }
