@@ -102,6 +102,7 @@ namespace Sa3aBeSa3a
             }
 
             app.UseHttpsRedirection();
+            app.UseRateLimiter();
             app.UseAuthentication();
             app.UseAuthorization();
 
