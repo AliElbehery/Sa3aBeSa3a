@@ -13,8 +13,8 @@ public static class ClaimNames
 public static class ClaimsPrincipalExtensions
 {
     /// <summary>The id of the logged-in user (always taken from the token, never from the request body).</summary>
-    public static long GetUserId(this ClaimsPrincipal user)
-        => long.TryParse(user.FindFirst(ClaimNames.MemberId)?.Value, out var id)
+    public static int GetUserId(this ClaimsPrincipal user)
+        => int.TryParse(user.FindFirst(ClaimNames.MemberId)?.Value, out var id)
             ? id
             : throw new Exception("Invalid token.");
 
