@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Sa3aBeSa3a.Domain.Interfaces.Services;
 using Sa3aBeSa3a.Application.Services;
+using Sa3aBeSa3a.Domain.Interfaces;
 
 namespace Sa3aBeSa3a.Application
 {
@@ -12,7 +13,7 @@ namespace Sa3aBeSa3a.Application
             services.AddScoped<IHelpRequestServices, HelpRequestServices>();
             services.AddScoped<IOfferServices, OfferServices>();
             services.AddScoped<IAuthServices, AuthServices>();
-
+            services.AddSingleton<ITokenServices, TokenServices>();
             return services;
         }
     }
