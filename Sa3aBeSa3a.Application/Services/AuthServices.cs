@@ -64,6 +64,12 @@ namespace Sa3aBeSa3a.Application.Services
             var t = tokens.Create(member);
             return new AuthResultDtos(t.Token, t.ExpiresAt, ToDto(member));
         }
+        public async Task<MemberDto> GetProfileAsync(int id)
+        {
+            var member = await authRepository.GetProfileAsync(id)
+                ?? throw new Exception("User not found.");
+            return ToDto(member);
+        }
         private static MemberDto ToDto(Members u)
             => new MemberDto { MemberId = u.Id, Name = u.Name, Email = u.Email, Phone = u.PhoneNumber, Role = u.Role };
 

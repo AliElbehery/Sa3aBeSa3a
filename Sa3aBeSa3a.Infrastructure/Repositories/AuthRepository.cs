@@ -32,6 +32,7 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
                 TransactionType = TransactionTypes.WelcomeBonus
             };
             await _context.Members.AddAsync(member);
+            await _context.LedgerEntries.AddAsync(bonus);
             return member;
         }
         public async Task<Members?> GetByEmailAsync(string email)
@@ -55,14 +56,12 @@ namespace Sa3aBeSa3a.Infrastructure.Repositories
         {
             return await _context.Members.ToListAsync();
         }
-        public async Task<MemberDto> GetProfileAsync(int memberId)
+        public async Task<Members?> GetProfileAsync(int memberId)
         {
             var member = await _context.Members.AsNoTracking().FirstOrDefaultAsync(m => m.Id == memberId)
-                       ?? throw new Exception("User not found.");
-            return ToDto(member);
+           return member;
         }
-        private static MemberDto ToDto(Members u)
-            => new MemberDto { MemberId = u.Id, Name = u.Name, Email = u.Email, Phone = u.PhoneNumber, Role = u.Role };
+
 
     }
 }
