@@ -34,13 +34,13 @@ namespace Sa3aBeSa3a.Application.Services
             await authRepository.SaveChangesAsync();
             return BuildResult(member);
         }
-        public async Task<AuthResultDtos> Login(LoginDto dto)
+        public async Task<AuthResultDtos> LoginAsync(LoginDto dto)
         {
             var email = dto.Email.Trim().ToLowerInvariant();
-            var member = authRepository.GetByEmailAsync(email);
+            var member =await authRepository.GetByEmailAsync(email);
             if(member == null)
             {
-                var dummy = Hasher.VerifyHashedPassword(new Members, DummyHash, dto.Password);
+                var dummy = Hasher.VerifyHashedPassword(new Members(), DummyHash, dto.Password);
                 throw new Exception("InvalidCredentials");
             }
 
