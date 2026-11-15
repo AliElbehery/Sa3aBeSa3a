@@ -11,6 +11,7 @@ namespace Sa3aBeSa3a.Application
         {
             services.AddScoped<IHelpRequestServices, HelpRequestServices>();
             services.AddScoped<IOfferServices, OfferServices>();
+            services.AddScoped<IAuthServices, AuthServices>();
 
             return services;
         }

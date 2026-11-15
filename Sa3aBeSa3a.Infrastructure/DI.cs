@@ -16,6 +16,7 @@ namespace Sa3aBeSa3a.Infrastructure
                 options.UseSqlServer(connectionString));
             services.AddScoped<IHelpRequestRepository, HelpRequestRepository>();
             services.AddScoped<IOfferRepository, OfferRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
 
             return services;
         }
