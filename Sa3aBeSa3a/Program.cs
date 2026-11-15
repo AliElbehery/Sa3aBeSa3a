@@ -79,6 +79,13 @@ namespace Sa3aBeSa3a
                 o.AddPolicy("ModeratorsOnly", p => p.RequireRole("Moderator"));
                 
             });
+            builder.Services.AddRateLimiter(o =>
+            {
+                o.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+                o.AddPolicy("auth", ctx => RateLimitPartition.GetFixedWindowLimiter(
+                    ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                    _ => new FixedWindowRateLimiterOptions { PermitLimit = 10, Window = TimeSpan.FromMinutes(1) }));
+            });
 
             builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.Section));
 

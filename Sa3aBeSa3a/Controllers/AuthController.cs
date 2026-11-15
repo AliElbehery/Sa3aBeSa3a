@@ -3,7 +3,6 @@ using Sa3aBeSa3a.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
-using Sa3aBeSa3a.Domain.Interfaces.Repositries;
 using Sa3aBeSa3a.Application.Auth;
 
 namespace Sa3aBeSa3a.Controllers
