@@ -3,13 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
 using Sa3aBeSa3a.Application;
 using Sa3aBeSa3a.Domain.Dtos;
 using Sa3aBeSa3a.Infrastructure.Data;
 using Sa3aBeSa3a.Infrastructure;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using Sa3aBeSa3a.Application.Auth;
 
@@ -91,7 +89,7 @@ namespace Sa3aBeSa3a
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
@@ -102,6 +100,8 @@ namespace Sa3aBeSa3a
             }
 
             app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.UseRateLimiter();
             app.UseAuthentication();
             app.UseAuthorization();
