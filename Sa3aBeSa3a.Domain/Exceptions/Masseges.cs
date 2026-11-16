@@ -24,22 +24,26 @@ namespace Sa3aBeSa3a.Domain.Exceptions
         public const string MemberNotQualified = "err.membernotqualified";
 
         public const string NoAcceptedOffer= "err.noacceptedoffer";
-        public const string CanNotCancel = "err.canotcancel";
+        public const string CanNotCancel = "err.cannotcancel";
 
         public const string OutOfRangeReview = "err.outofrangereview";
+        public const string NoAvailableHours = "err.noavailablehours";
+        public const string OutOfRangeMessage = "err.outofrangemessage";
+
+
 
         //conflict
         public const string EmailExist = "err.emailexist";
 
-        public const string DublicateOffer = "err.dublicateoffer";
+        public const string DuplicateOffer = "err.duplicateoffer";
 
         public const string HelpRequestNotAvailable = "err.helprequestnotavailable";
 
-        public const string HelpRequestAlreadyCompeleted = "err.helprequestalreadycompleted";
+        public const string HelpRequestAlreadyCompleted = "err.helprequestalreadycompleted";
 
         public const string OfferNotAvailable = "err.offernotavailable";
 
-        public const string DublicateReview = "err.dublicatereview";
+        public const string DuplicateReview = "err.duplicatereview";
 
         //forbidden
         public const string NotYourHelpRequest = "err.notyourhelprequest";
@@ -48,9 +52,18 @@ namespace Sa3aBeSa3a.Domain.Exceptions
 
         //authorization
 
-        public const string NotAuthorized = "err.notauthorizef";
+        public const string NotAuthorized = "err.notauthorized";
+        public const string NotActive = "err.notactive";
+        public const string InCorrectPassword = "err.incorrectpassword";
+        public const string InCorrectEmail = "err.incorrectemail";
+        public const string NullInput = "err.nullinput";
 
-        
+        public const string InPastDate = "err.inpastdate";
+        public const string OutOfRangeHours = "err.outofrangehours";
+        public const string OutOfRangeLength = "err.outofrangelength";
+
+
+
 
 
 

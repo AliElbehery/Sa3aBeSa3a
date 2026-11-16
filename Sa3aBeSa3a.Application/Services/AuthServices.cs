@@ -4,6 +4,7 @@ using Sa3aBeSa3a.Domain.Entities;
 using Sa3aBeSa3a.Domain.Interfaces;
 using Sa3aBeSa3a.Domain.Interfaces.Repositries;
 using Sa3aBeSa3a.Domain.Interfaces.Services;
+using Sa3aBeSa3a.Domain.Exceptions;
 
 
 namespace Sa3aBeSa3a.Application.Services
@@ -17,11 +18,11 @@ namespace Sa3aBeSa3a.Application.Services
             if(string.IsNullOrEmpty(dto.Name) || string.IsNullOrEmpty(dto.Email) || 
                 string.IsNullOrEmpty(dto.Password) || string.IsNullOrEmpty(dto.PhoneNumber))
             {
-                throw new ArgumentException("Missing Inputs");
+                throw new ForbiddenException("Inputs can't be null", Err.NullInput);
             }
             if (await authRepository.IsEmailExistsAsync(dto.Email))
             {
-                throw new ArgumentException("The Email is already exist");
+                throw new ConflictException("The Email is already exist", Err.EmailExist);
             }
             var member = await authRepository.AddAsync(dto);
             var hashed = Hasher.HashPassword(member, dto.Password);
@@ -33,22 +34,24 @@ namespace Sa3aBeSa3a.Application.Services
         {
             if(string.IsNullOrEmpty(dto.Email) || (string.IsNullOrEmpty(dto.Password)))
             {
-                throw new Exception("Email and password can't be null or empty");
+                throw new ForbiddenException("Inputs can't be null", Err.NullInput);
             }
             var email = dto.Email.Trim().ToLowerInvariant();
             var member =await authRepository.GetByEmailAsync(email);
             if(member == null)
             {
                 var dummy = Hasher.VerifyHashedPassword(new Members(), DummyHash, dto.Password);
-                throw new Exception("InvalidCredentials");
+                throw new UnauthorizedException("Email is not valid", Err.InCorrectEmail);
             }
 
             var result = Hasher.VerifyHashedPassword(member, member.PasswordHash, dto.Password);
             if (result == PasswordVerificationResult.Failed)
-            { throw new Exception("InvalidCredentials"); }
+            {
+                throw new UnauthorizedException("Password is not valid", Err.InCorrectPassword);
+            }
             if(!member.IsActive)
             {
-                throw new Exception("Account is disabled.");
+                throw new ForbiddenException("User is disable", Err.NotActive);
             }
             if (result == PasswordVerificationResult.SuccessRehashNeeded)
             {
@@ -67,7 +70,7 @@ namespace Sa3aBeSa3a.Application.Services
         public async Task<MemberDto> GetProfileAsync(int id)
         {
             var member = await authRepository.GetProfileAsync(id)
-                ?? throw new Exception("User not found.");
+                ?? throw new NotFoundException("User not found.", Err.UserNotFound);
             return ToDto(member);
         }
         private static MemberDto ToDto(Members u)
