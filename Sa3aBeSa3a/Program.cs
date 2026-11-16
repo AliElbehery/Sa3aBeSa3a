@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using Sa3aBeSa3a.Domain.Enums;
 using Microsoft.IdentityModel.Tokens;
 using Sa3aBeSa3a.Application;
 using Sa3aBeSa3a.Domain.Dtos;
@@ -45,7 +45,12 @@ namespace Sa3aBeSa3a
                 {
                     var userIdValue = context.Principal?.FindFirst(ClaimNames.MemberId)?.Value;
                     var role = context.Principal?.FindFirst(ClaimNames.Role)?.Value;
-                    if (!long.TryParse(userIdValue, out var userId) || string.IsNullOrWhiteSpace(role))
+                    if (!int.TryParse(userIdValue, out var userId) || string.IsNullOrWhiteSpace(role))
+                    {
+                        context.Fail("Invalid account claims.");
+                        return;
+                    }
+                    if (!MemberRole.TryParse<MemberRole>(role, out var memberrole) || string.IsNullOrWhiteSpace(role))
                     {
                         context.Fail("Invalid account claims.");
                         return;
@@ -53,7 +58,7 @@ namespace Sa3aBeSa3a
 
                     var db = context.HttpContext.RequestServices.GetRequiredService<AppDbContext>();
                     var isValid = await db.Members.AsNoTracking().AnyAsync(
-                        user => user.Id == userId && user.IsActive && user.Role.ToString() == role);
+                        user => user.Id == userId && user.IsActive && user.Role == memberrole);
                     if (!isValid) context.Fail("Account is inactive or its role has changed.");
                 };
                 o.TokenValidationParameters = new TokenValidationParameters
