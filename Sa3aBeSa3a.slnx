@@ -2,5 +2,6 @@
   <Project Path="Sa3aBeSa3a.Application/Sa3aBeSa3a.Application.csproj" />
   <Project Path="Sa3aBeSa3a.Domain/Sa3aBeSa3a.Domain.csproj" />
   <Project Path="Sa3aBeSa3a.Infrastructure/Sa3aBeSa3a.Infrastructure.csproj" />
+  <Project Path="Sa3aBeSa3a.Test/Sa3aBeSa3a.Test.csproj" Id="60e0db9b-3dc2-408a-be98-1f2280cc277c" />
   <Project Path="Sa3aBeSa3a/Sa3aBeSa3a.csproj" />
 </Solution>
