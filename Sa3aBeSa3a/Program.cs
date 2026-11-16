@@ -50,7 +50,7 @@ namespace Sa3aBeSa3a
                         context.Fail("Invalid account claims.");
                         return;
                     }
-                    if (!MemberRole.TryParse<MemberRole>(role, out var memberrole) || string.IsNullOrWhiteSpace(role))
+                    if (!MemberRole.TryParse<MemberRole>(role, out var memberrole))
                     {
                         context.Fail("Invalid account claims.");
                         return;
